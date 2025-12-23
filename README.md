@@ -1,2 +1,1 @@
-# nvim-dotfiles
-My neovim dotfiles
+the best nvim config ever i swear
