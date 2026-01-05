@@ -51,6 +51,11 @@ vim.opt.completeopt = {
 vim.opt.guicursor = {
     "n-v-c-i-r-cr:hor20"
 }
+vim.filetype.add({
+    extension = {
+        CPP = "cpp"
+    }
+})
 
 -- lazy setup & plugins
 require("lazy").setup({
@@ -91,16 +96,6 @@ require("lazy").setup({
                 }
             }
         },{
-            "startup-nvim/startup.nvim",
-            dependencies = {
-                "nvim-telescope/telescope.nvim",
-                "nvim-lua/plenary.nvim",
-                "nvim-telescope/telescope-file-browser.nvim"
-            },
-            opts = {
-                theme = "evil"
-            }
-        },{
             "neovim/nvim-lspconfig"
         },{
             "nvim-treesitter/nvim-treesitter-context",
@@ -132,12 +127,17 @@ require("lazy").setup({
             dependencies = {
                 "nvim-tree/nvim-web-devicons"
             }
+        },{
+            "L3MON4D3/LuaSnip",
+            dependencies = {
+                "rafamadriz/friendly-snippets"
+            }
         }
     },
     install = {
         colorscheme = {
             "nord"
-	}
+ 	    }
     },
     checker = {
         enabled = true
@@ -185,8 +185,16 @@ bufferline.setup({
                 "close"
             }
         },
+        diagnostics = "nvim_lsp",
+        max_name_length = 18,
         style_preset = bufferline.style_preset.no_italic
     }
+})
+
+-- luasnip setup
+require("luasnip.loaders.from_vscode").lazy_load()
+require("luasnip.loaders.from_lua").load({
+    paths = "/home/tr43212/.config/nvim/snippets"
 })
 
 -- builtin cmp
@@ -327,6 +335,14 @@ vim.keymap.set({
     "n",
     "v"
 }, "<C-s>", ":w<CR>")
+
+-- enable diagnostics
+vim.diagnostic.config({
+    virtual_text = true,
+    signs = true,
+    underline = true,
+    update_in_insert = true
+})
 
 -- open file panel
 vim.api.nvim_cmd({
